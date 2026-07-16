@@ -15,28 +15,20 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
 .sun-glow{top:-120px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(247,201,70,0.25) 0%,rgba(247,201,70,0.08) 40%,transparent 70%);border-radius:50%}
 .sun-glow-left{bottom:-100px;left:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(232,146,63,0.15) 0%,rgba(232,146,63,0.04) 40%,transparent 70%);border-radius:50%}
 .container{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
-.header{text-align:center;padding:36px 0 12px}
-.header-icon{display:inline-block;animation:float 3s ease-in-out infinite;margin-bottom:4px}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.header h1{font-size:2.6rem;font-weight:700;background:linear-gradient(135deg,var(--accent) 0%,#E8742D 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.04em}
-.hero{text-align:center;padding:20px 0 32px}
-.hero-slogan{font-size:1.6rem;font-weight:700;color:var(--ink);margin-bottom:8px;line-height:1.4}
-.hero-slogan .highlight{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:1rem;color:var(--muted);margin-bottom:24px;max-width:520px;margin-left:auto;margin-right:auto}
-.hero-cta{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;background:linear-gradient(135deg,var(--accent),var(--accent3));color:#fff;border:none;border-radius:var(--radius-xl);font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 24px rgba(232,146,63,0.3);transition:all 0.3s ease;letter-spacing:0.02em}
-.hero-cta:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(232,146,63,0.4)}
-.hero-stats{display:flex;justify-content:center;gap:40px;margin-top:24px}
-.hero-stat{text-align:center}
-.hero-stat .hs-num{font-size:1.6rem;font-weight:700;color:var(--accent)}
-.hero-stat .hs-label{font-size:0.78rem;color:var(--muted)}
-.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:28px;background:var(--bg2);border-radius:var(--radius-xl);padding:5px;box-shadow:var(--shadow-sm);border:1px solid var(--rule);max-width:520px;margin-left:auto;margin-right:auto}
-.tab-btn{flex:1;padding:10px 16px;border:none;background:transparent;border-radius:22px;font-size:0.88rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.3s ease;font-family:inherit;white-space:nowrap}
-.tab-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent3));color:#fff;box-shadow:0 4px 14px rgba(232,146,63,0.3)}
-.tab-btn:hover:not(.active){color:var(--ink);background:rgba(232,146,63,0.08)}
+/* Nav bar: brand + tabs in one row */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px;gap:16px;flex-wrap:wrap}
+.nav-brand{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-brand h1{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent) 0%,#E8742D 50%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.04em;line-height:1}
+.nav-brand svg{flex-shrink:0}
+.nav-brand .nav-slogan{font-size:0.75rem;color:var(--muted);white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.nav-tabs{display:flex;gap:4px;background:var(--bg2);border-radius:var(--radius-xl);padding:4px;border:1px solid var(--rule)}
+.tab-btn{padding:8px 14px;border:none;background:transparent;border-radius:20px;font-size:0.82rem;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.3s ease;font-family:inherit;white-space:nowrap}
+.tab-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent3));color:#fff;box-shadow:0 3px 10px rgba(232,146,63,0.25)}
+.tab-btn:hover:not(.active){color:var(--ink);background:rgba(232,146,63,0.06)}
 .tab-panel{display:none}.tab-panel.active{display:block}
-.section-header{text-align:center;margin-bottom:20px}
-.section-header h2{font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:4px}
-.section-header p{font-size:0.88rem;color:var(--muted)}
+.section-header{text-align:center;margin-bottom:16px}
+.section-header h2{font-size:1.25rem;font-weight:700;color:var(--ink);margin-bottom:2px}
+.section-header p{font-size:0.82rem;color:var(--muted)}
 .action-bar{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
 .update-info{text-align:center;font-size:0.73rem;color:var(--muted);margin-bottom:16px;opacity:0.8}
 .btn{padding:10px 24px;border:none;border-radius:var(--radius-xl);font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.3s ease;display:inline-flex;align-items:center;gap:8px}
@@ -44,16 +36,20 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,146,63,0.35)}
 .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
 .btn-sm{padding:6px 14px;font-size:0.8rem;border-radius:16px}
+.btn-ghost-sm{padding:5px 12px;font-size:0.78rem;border-radius:16px;background:transparent;color:var(--muted);border:1px solid var(--rule);cursor:pointer;font-family:inherit;font-weight:600;transition:all 0.2s;display:inline-flex;align-items:center;gap:4px}
+.btn-ghost-sm:hover{border-color:var(--accent);color:var(--accent)}
 .select-wrap{position:relative}
-.select-wrap select{padding:10px 36px 10px 14px;border:1.5px solid var(--rule);border-radius:var(--radius-xl);background:var(--bg2);font-size:0.85rem;color:var(--ink);font-family:inherit;min-width:140px;cursor:pointer;appearance:none;-webkit-appearance:none;transition:border-color 0.3s}
+.select-wrap select{padding:8px 32px 8px 12px;border:1.5px solid var(--rule);border-radius:var(--radius-xl);background:var(--bg2);font-size:0.82rem;color:var(--ink);font-family:inherit;min-width:120px;cursor:pointer;appearance:none;-webkit-appearance:none;transition:border-color 0.3s}
 .select-wrap select:focus{outline:none;border-color:var(--accent)}
-.select-wrap::after{content:'▾';position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted);font-size:0.8rem}
-/* Date Picker */
-.date-range{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
-.date-range label{font-size:0.82rem;color:var(--muted);font-weight:600}
-.date-range input[type="date"]{padding:8px 12px;border:1.5px solid var(--rule);border-radius:var(--radius-xl);background:var(--bg2);font-size:0.82rem;color:var(--ink);font-family:inherit;cursor:pointer;transition:border-color 0.3s}
-.date-range input[type="date"]:focus{outline:none;border-color:var(--accent)}
-.date-range .date-sep{color:var(--muted);font-size:0.85rem}
+.select-wrap::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted);font-size:0.75rem}
+/* Unified Toolbar */
+.toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:18px;padding:10px 14px;background:var(--bg2);border:1px solid var(--rule);border-radius:var(--radius-md);box-shadow:var(--shadow-sm)}
+.toolbar select{padding:7px 30px 7px 10px;border:1.5px solid var(--rule);border-radius:16px;background:var(--bg);font-size:0.8rem;color:var(--ink);font-family:inherit;min-width:110px;cursor:pointer;appearance:none;-webkit-appearance:none;transition:border-color 0.3s}
+.toolbar select:focus{outline:none;border-color:var(--accent)}
+.toolbar input[type="date"]{padding:6px 10px;border:1.5px solid var(--rule);border-radius:16px;background:var(--bg);font-size:0.78rem;color:var(--ink);font-family:inherit;cursor:pointer;transition:border-color 0.3s}
+.toolbar input[type="date"]:focus{outline:none;border-color:var(--accent)}
+.toolbar .tb-sep{color:var(--rule);font-size:0.85rem;flex-shrink:0}
+.toolbar .tb-time{font-size:0.72rem;color:var(--muted);margin-left:auto;white-space:nowrap}
 .date-suitability{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600}
 .date-suitability.good{background:#ECFDF5;color:#065F46}
 .date-suitability.ok{background:#FEF3D5;color:#92400E}
@@ -81,14 +77,15 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
 .weather-card.rainy{border-color:#B8D4E8;background:linear-gradient(135deg,#F5F9FC 0%,var(--bg2) 100%)}
 .weather-card .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .weather-card .city-name{font-weight:700;font-size:1rem;color:var(--ink)}
-.weather-card .city-region{font-size:0.7rem;color:var(--muted);display:block}
+.weather-card .city-region{font-size:0.7rem;color:var(--muted);display:inline-block;margin-left:6px;vertical-align:middle}
 .weather-card .weather-icon{font-size:2rem;line-height:1}
-.weather-card .card-temp{font-size:2.4rem;font-weight:700;color:var(--ink);line-height:1;margin-bottom:3px}
+.weather-card .card-temp-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}
+.weather-card .card-temp{font-size:2.4rem;font-weight:700;color:var(--ink);line-height:1}
 .weather-card .card-temp .unit{font-size:0.95rem;font-weight:400;color:var(--muted);vertical-align:super}
 .weather-card .card-desc{font-size:0.8rem;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:6px}
 .weather-card .card-meta{display:flex;gap:12px;font-size:0.72rem;color:var(--muted);flex-wrap:wrap}
 .weather-card .card-meta span{display:flex;align-items:center;gap:3px}
-.weather-card .sun-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#FEF3D5,#FDE68A);color:#92400E;padding:3px 9px;border-radius:12px;font-size:0.7rem;font-weight:600;margin-top:6px}
+.weather-card .sun-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#FEF3D5,#FDE68A);color:#92400E;padding:4px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;white-space:nowrap}
 /* UV Badge */
 .uv-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:0.68rem;font-weight:600}
 .uv-low{background:#ECFDF5;color:#065F46}
@@ -151,10 +148,12 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
 .trend-legend span{display:flex;align-items:center;gap:5px}
 .trend-legend .tl-dot{width:10px;height:10px;border-radius:50%}
 /* Route Planner */
-.route-planner{background:var(--bg2);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow-sm);border:1px solid var(--rule)}
-.route-inputs{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px;justify-content:center}
-.route-arrow{font-size:1.5rem;color:var(--accent);font-weight:700}
-.route-options{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.route-planner{background:var(--bg2);border-radius:var(--radius-md);padding:16px 20px;box-shadow:var(--shadow-sm);border:1px solid var(--rule)}
+.route-inputs{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
+.route-inputs select{flex:1;min-width:120px;max-width:200px;padding:8px 30px 8px 12px;border:1.5px solid var(--rule);border-radius:var(--radius-xl);background:var(--bg);font-size:0.82rem;color:var(--ink);font-family:inherit;cursor:pointer;appearance:none;-webkit-appearance:none;transition:border-color 0.3s}
+.route-inputs select:focus{outline:none;border-color:var(--accent)}
+.route-arrow{font-size:1.1rem;color:var(--accent);font-weight:700}
+.route-options{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .route-option-group{display:flex;align-items:center;gap:6px}
 .route-option-group label{font-size:0.85rem;color:var(--muted);font-weight:600}
 .transport-btns{display:flex;gap:0;border-radius:var(--radius-xl);overflow:hidden;border:1.5px solid var(--rule)}
@@ -166,13 +165,17 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
 .route-summary h3{font-size:1.15rem;margin-bottom:6px;color:var(--ink)}
 .route-summary .route-verdict{font-size:1rem;color:var(--accent);font-weight:600;margin-bottom:6px}
 .route-summary .route-transport{font-size:0.8rem;color:var(--muted)}
-.route-timeline{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:20px;flex-wrap:wrap}
-.timeline-city{text-align:center;padding:10px 14px;background:var(--bg);border-radius:var(--radius-md);border:1px solid var(--rule);min-width:90px;transition:all 0.3s;cursor:pointer}
+.route-timeline{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;margin-bottom:20px;max-width:900px;margin-left:auto;margin-right:auto}
+.route-timeline .tl-row{display:flex;align-items:center;gap:0}
+.route-timeline .tl-row.reverse{flex-direction:row-reverse}
+.timeline-city{text-align:center;padding:10px 12px;background:var(--bg);border-radius:var(--radius-md);border:1px solid var(--rule);min-width:88px;transition:all 0.3s;cursor:pointer;flex-shrink:0}
 .timeline-city.origin,.timeline-city.destination{border-color:var(--accent3);background:linear-gradient(135deg,#FFFDF5,var(--bg))}
 .timeline-city.waypoint{border-color:var(--accent2);background:linear-gradient(135deg,#FFFDF5,var(--bg));box-shadow:0 2px 12px rgba(247,201,70,0.15)}
 .timeline-city .tc-name{font-weight:700;font-size:0.85rem}
 .timeline-city .tc-weather{font-size:0.75rem;color:var(--muted);margin-top:2px}
-.timeline-arrow{font-size:1.2rem;color:var(--accent);padding:0 5px;font-weight:700}
+.timeline-arrow{font-size:1.1rem;color:var(--accent);padding:0 4px;font-weight:700;flex-shrink:0}
+.tl-turn{display:flex;justify-content:flex-end;padding:0 8px 0 0;font-size:1.1rem;color:var(--accent);font-weight:700}
+.tl-turn.left{justify-content:flex-start;padding:0 0 0 8px}
 .route-section-title{font-size:0.95rem;font-weight:700;margin-bottom:10px;margin-top:18px;color:var(--ink);text-align:center}
 .route-cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
 .route-city-card{background:var(--bg);border-radius:var(--radius-sm);padding:12px;border:1px solid var(--rule);text-align:center;transition:all 0.3s;cursor:pointer}
@@ -194,9 +197,6 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
 .poster-modal .pm-actions{display:flex;gap:10px;flex-wrap:wrap}
 .poster-modal .pm-actions .btn{flex:1;justify-content:center;min-width:120px}
 .poster-modal .pm-hint{font-size:0.75rem;color:var(--muted);text-align:center;margin-top:10px}
-/* Quick poster button */
-.quick-poster-bar{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:20px;padding:14px 18px;background:linear-gradient(135deg,rgba(247,201,70,0.08),rgba(232,146,63,0.05));border:1px solid #FDE68A;border-radius:var(--radius-md)}
-.quick-poster-bar label{font-size:0.85rem;color:var(--ink);font-weight:600}
 .poster-canvas{display:none}
 /* Empty Favorites */
 .empty-fav{text-align:center;padding:48px 24px;color:var(--muted);grid-column:1/-1}
@@ -210,36 +210,88 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 24px;border-radius:var(--radius-xl);font-size:0.85rem;font-weight:600;z-index:1000;opacity:0;transition:opacity 0.3s;pointer-events:none;font-family:inherit;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 @media(max-width:768px){
-  .header{padding:24px 0 10px}.header h1{font-size:2rem}
-  .hero{padding:14px 0 24px}.hero-slogan{font-size:1.3rem}.hero-stats{gap:20px}.hero-stat .hs-num{font-size:1.3rem}
+  .nav{flex-direction:column;align-items:stretch;padding:12px 0 8px}
+  .nav-brand{justify-content:center}
+  .nav-brand h1{font-size:1.3rem}
+  .nav-tabs{justify-content:center}
+  .tab-btn{padding:7px 12px;font-size:0.78rem}
   .weather-grid,.skeleton-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
   .weather-card{padding:14px}.weather-card .card-temp{font-size:2rem}.weather-card .weather-icon{font-size:1.7rem}.weather-card .card-meta{gap:8px;font-size:0.68rem}
-  .route-inputs{flex-direction:column}.route-arrow{transform:rotate(90deg)}
-  .container{padding:0 16px}.action-bar{flex-direction:column}.select-wrap select{min-width:100%;width:100%}
-  .tabs{max-width:100%}.tab-btn{padding:9px 12px;font-size:0.82rem}
+  .route-inputs select{min-width:100%}
+  .container{padding:0 16px}
+  .toolbar{padding:8px 10px;gap:5px}
+  .toolbar select,.toolbar input[type="date"]{font-size:0.75rem;min-width:90px;padding:6px 8px}
+  .toolbar .tb-sep{display:none}
+  .toolbar .tb-time{margin-left:0;width:100%;text-align:center;margin-top:4px}
   .modal{padding:22px 18px}.modal-current{flex-direction:column;text-align:center;gap:10px;padding:14px}.modal-current .mc-meta{justify-content:center}
   .forecast-row{gap:3px}.forecast-day{min-width:42px;padding:3px 2px}.forecast-day .fd-icon{font-size:0.9rem}.forecast-day .fd-temp{font-size:0.62rem}
-  .route-timeline{flex-direction:column;gap:0}.timeline-arrow{transform:rotate(90deg);padding:3px 0}
+  .route-timeline{grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:4px}
+  .timeline-city{padding:8px 6px;min-width:70px}.timeline-city .tc-name{font-size:0.78rem}.timeline-city .tc-weather{font-size:0.68rem}
   .transport-btns{flex-wrap:wrap;border-radius:var(--radius-md)}
-  .hero-cta{padding:12px 28px;font-size:0.95rem}
-  .date-range{gap:4px}.date-range input[type="date"]{font-size:0.78rem;padding:7px 10px}
 }
 @media(max-width:480px){
-  .header h1{font-size:1.7rem}.hero-slogan{font-size:1.15rem}
+  .nav-brand h1{font-size:1.1rem}
+  .nav-tabs{flex-wrap:wrap}
   .weather-grid,.skeleton-grid{grid-template-columns:1fr 1fr;gap:8px}
   .weather-card{padding:12px}.weather-card .card-temp{font-size:1.7rem}.weather-card .card-header{margin-bottom:6px}
   .sunshine-bar-wrap{display:none}.skeleton-card .sk-forecast{display:none}
   .fav-btn{font-size:0.95rem;top:8px;right:8px}
 }
+/* ===== SPLASH SCREEN ===== */
+.splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.splash-bg{position:absolute;inset:0;background:url('./assets/splash-bg.jpg') center/cover no-repeat}
+.splash-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(61,44,44,0.15) 0%,rgba(232,146,63,0.08) 40%,transparent 100%)}
+.splash-content{position:relative;z-index:2;text-align:center}
+.splash-logo{width:56px;height:56px;margin:0 auto 20px;opacity:0;animation:splashLogoIn 1s 0.3s cubic-bezier(0.16,1,0.3,1) forwards}
+.splash-title{font-family:'Lora','PingFang SC',serif;font-size:3.2rem;font-weight:700;color:#fff;letter-spacing:0.08em;line-height:1.2;opacity:0;animation:splashFadeUp 0.8s 0.7s cubic-bezier(0.16,1,0.3,1) forwards;text-shadow:0 2px 30px rgba(0,0,0,0.2)}
+.splash-sub{font-size:0.95rem;color:rgba(255,255,255,0.75);margin-top:10px;letter-spacing:0.04em;opacity:0;animation:splashFadeUp 0.8s 1s cubic-bezier(0.16,1,0.3,1) forwards;font-weight:400}
+.splash-progress{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);width:120px;height:2px;background:rgba(255,255,255,0.2);border-radius:2px;overflow:hidden;z-index:2}
+.splash-progress-bar{height:100%;width:0%;background:rgba(255,255,255,0.8);border-radius:2px;transition:width 0.3s ease}
+@keyframes splashLogoIn{from{opacity:0;transform:scale(0.8) rotate(-10deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes splashFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+/* ===== SPLASH TRANSITION (split open) ===== */
+.splash-split-left,.splash-split-right{position:fixed;top:0;bottom:0;width:50%;z-index:9998;background:var(--bg);will-change:transform;transition:transform 0.9s cubic-bezier(0.65,0,0.35,1)}
+.splash-split-left{left:0;transform:translateX(0)}.splash-split-right{right:0;transform:translateX(0)}
+.splash-split-left.open{transform:translateX(-105%)}
+.splash-split-right.open{transform:translateX(105%)}
+/* Main app hidden initially */
+.main-app{opacity:0;transition:opacity 0.5s ease 0.4s}
+.main-app.reveal{opacity:1}
+/* ===== END SPLASH ===== */
 </style>
 </head>
 <body>
+<!-- Splash Screen -->
+<div class="splash" id="splash">
+  <div class="splash-bg"></div>
+  <div class="splash-content">
+    <svg class="splash-logo" viewBox="0 0 56 56" fill="none">
+      <circle cx="28" cy="28" r="14" fill="#F7C946"/>
+      <circle cx="28" cy="28" r="14" fill="url(#splashSun)"/>
+      <defs><radialGradient id="splashSun" cx="50%" cy="50%"><stop offset="0%" stop-color="#F7C946"/><stop offset="60%" stop-color="#F5A65B"/><stop offset="100%" stop-color="#E8923F" stop-opacity="0.4"/></radialGradient></defs>
+      <g stroke="#F5A65B" stroke-width="2.5" stroke-linecap="round" opacity="0.9">
+        <line x1="28" y1="6" x2="28" y2="1"/><line x1="28" y1="50" x2="28" y2="55"/>
+        <line x1="6" y1="28" x2="1" y2="28"/><line x1="50" y1="28" x2="55" y2="28"/>
+        <line x1="12.4" y1="12.4" x2="8.7" y2="8.7"/><line x1="43.6" y1="43.6" x2="47.3" y2="47.3"/>
+        <line x1="12.4" y1="43.6" x2="8.7" y2="47.3"/><line x1="43.6" y1="12.4" x2="47.3" y2="8.7"/>
+      </g>
+    </svg>
+    <div class="splash-title">追光者</div>
+    <div class="splash-sub">追逐阳光，温暖前行</div>
+  </div>
+  <div class="splash-progress"><div class="splash-progress-bar" id="splash-bar"></div></div>
+</div>
+<!-- Transition curtains -->
+<div class="splash-split-left" id="curtain-l"></div>
+<div class="splash-split-right" id="curtain-r"></div>
+<!-- Main App -->
+<div class="main-app" id="main-app">
 <div class="bg-decor sun-glow"></div>
 <div class="bg-decor sun-glow-left"></div>
 <div class="container">
-  <header class="header">
-    <div class="header-icon">
-      <svg width="44" height="44" viewBox="0 0 56 56" fill="none">
+  <nav class="nav">
+    <div class="nav-brand">
+      <svg width="28" height="28" viewBox="0 0 56 56" fill="none">
         <circle cx="28" cy="28" r="14" fill="url(#sunGrad)"/>
         <defs><radialGradient id="sunGrad" cx="50%" cy="50%"><stop offset="0%" stop-color="#F7C946"/><stop offset="60%" stop-color="#F5A65B"/><stop offset="100%" stop-color="#E8923F" stop-opacity="0.3"/></radialGradient></defs>
         <g stroke="#F5A65B" stroke-width="2" stroke-linecap="round">
@@ -249,72 +301,48 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
           <line x1="12.4" y1="43.6" x2="9.6" y2="46.4"/><line x1="43.6" y1="12.4" x2="46.4" y2="9.6"/>
         </g>
       </svg>
+      <h1>追光者</h1>
+      <span class="nav-slogan">实时天气 + UV 指数，帮你找到阳光最灿烂的目的地</span>
     </div>
-    <h1>追光者</h1>
-  </header>
-  <section class="hero">
-    <p class="hero-slogan">不喜欢下雨？<span class="highlight">让阳光替你选目的地</span></p>
-    <p class="hero-sub">实时分析全球 100+ 热门城市天气，为你找到最适合出行的晴天</p>
-    <button class="hero-cta" onclick="document.getElementById('sunny-tab').scrollIntoView({behavior:'smooth'})">☀️ 寻找阳光城市</button>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hs-num">100+</div><div class="hs-label">覆盖城市</div></div>
-      <div class="hero-stat"><div class="hs-num">6 大洲</div><div class="hs-label">全球范围</div></div>
-      <div class="hero-stat"><div class="hs-num">实时</div><div class="hs-label">气象数据</div></div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" data-tab="sunny-tab">☀️ 阳光城市</button>
+      <button class="tab-btn" data-tab="route-tab">🧭 路线规划</button>
+      <button class="tab-btn" data-tab="map-tab">🗺️ 阳光地图</button>
+      <button class="tab-btn" data-tab="fav-tab">💛 收藏</button>
     </div>
-  </section>
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="sunny-tab">☀️ 阳光城市</button>
-    <button class="tab-btn" data-tab="route-tab">🗺️ 路线规划</button>
-    <button class="tab-btn" data-tab="map-tab">🗺️ 阳光地图</button>
-    <button class="tab-btn" data-tab="fav-tab">💛 我的收藏</button>
-  </div>
+  </nav>
   <!-- Tab: Sunny Cities -->
   <div class="tab-panel active" id="sunny-tab">
-    <div class="section-header"><h2>阳光城市</h2><p>实时天气 + UV 指数，帮你找到阳光最灿烂的目的地</p></div>
-    <div class="date-range">
-      <label>📅 出行日期</label>
-      <input type="date" id="date-start">
-      <span class="date-sep">—</span>
-      <input type="date" id="date-end">
-      <button class="btn btn-primary btn-sm" onclick="applyDateFilter()">查看</button>
-      <button class="btn btn-sm" style="background:var(--bg2);border:1px solid var(--rule);color:var(--muted)" onclick="clearDateFilter()">清除</button>
-    </div>
-    <div class="action-bar">
-      <label class="select-wrap">
-        <select id="region-filter">
-          <option value="all">🌏 全部区域</option>
-          <option value="china">🇨🇳 中国</option>
-          <option value="asia">🌏 亚洲</option>
-          <option value="europe">🇪🇺 欧洲</option>
-          <option value="oceania">🌊 大洋洲</option>
-          <option value="americas">🌎 美洲</option>
-          <option value="africa">🌍 非洲</option>
-        </select>
-      </label>
-      <label class="select-wrap">
-        <select id="weather-filter">
-          <option value="all">☀️ 全部天气</option>
-          <option value="sunny">☀️ 仅晴天</option>
-          <option value="dry">🌤️ 无雨天气</option>
-          <option value="favorites">💛 我的收藏</option>
-        </select>
-      </label>
-      <label class="select-wrap">
-        <select id="sort-filter">
-          <option value="region">📍 按区域排列</option>
-          <option value="sunshine">☀️ 按日照时长</option>
-          <option value="temp">🌡️ 按温度排序</option>
-          <option value="sunny-days">📅 按晴天天数</option>
-          <option value="uv-safety">🧴 按UV适宜度</option>
-        </select>
-      </label>
-      <button class="btn btn-primary btn-sm" id="btn-refresh-all" onclick="refreshAllCities()">🔄 刷新</button>
-    </div>
-    <div class="update-info" id="update-info">等待加载…</div>
-    <div class="quick-poster-bar" id="quick-poster-bar" style="display:none">
-      <label>📊</label>
-      <button class="btn btn-primary btn-sm" onclick="generateDailyBrief()">生成今日阳光速报</button>
-      <span style="font-size:0.75rem;color:var(--muted)">一键生成今日全球阳光分布海报，可分享给朋友</span>
+    <div class="toolbar" id="main-toolbar">
+      <select id="date-start" title="出发日期"><option value="">出发</option></select>
+      <span class="tb-sep">—</span>
+      <select id="date-end" title="返回日期"><option value="">返回</option></select>
+      <span class="tb-sep">|</span>
+      <select id="region-filter" title="区域筛选">
+        <option value="all">🌏 全部区域</option>
+        <option value="china">🇨🇳 中国</option>
+        <option value="asia">🌏 亚洲</option>
+        <option value="europe">🇪🇺 欧洲</option>
+        <option value="oceania">🌊 大洋洲</option>
+        <option value="americas">🌎 美洲</option>
+        <option value="africa">🌍 非洲</option>
+      </select>
+      <select id="weather-filter" title="天气筛选">
+        <option value="all">☀️ 全部天气</option>
+        <option value="sunny">☀️ 仅晴天</option>
+        <option value="dry">🌤️ 无雨天气</option>
+        <option value="favorites">💛 我的收藏</option>
+      </select>
+      <select id="sort-filter" title="排序方式">
+        <option value="region">📍 按区域</option>
+        <option value="sunshine">☀️ 日照时长</option>
+        <option value="temp">🌡️ 温度</option>
+        <option value="sunny-days">📅 晴天天数</option>
+        <option value="uv-safety">🧴 UV适宜度</option>
+      </select>
+      <button class="btn btn-primary btn-sm" id="btn-refresh-all" onclick="refreshAllCities()">🔄</button>
+      <button class="btn-ghost-sm" id="btn-daily-brief" onclick="generateDailyBrief()" style="display:none">📊 速报</button>
+      <span class="tb-time" id="update-info">等待加载…</span>
     </div>
     <div id="weather-grid" class="weather-grid"><div class="loading-spinner"><div class="spinner"></div><span>正在获取天气数据…</span></div></div>
   </div>
@@ -323,20 +351,15 @@ body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',syste
     <div class="section-header"><h2>阳光路线规划</h2><p>选择起点和终点，为你规划一条阳光明媚的旅行路线</p></div>
     <div class="route-planner">
       <div class="route-inputs">
-        <label class="select-wrap"><select id="route-from"><option value="">选择出发城市</option></select></label>
+        <select id="route-from"><option value="">更改出发地</option></select>
         <span class="route-arrow">→</span>
-        <label class="select-wrap"><select id="route-to"><option value="">选择目的地</option></select></label>
-      </div>
-      <div class="route-options">
-        <div class="route-option-group">
-          <label>交通</label>
-          <div class="transport-btns" id="transport-btns">
-            <button class="transport-btn active" data-mode="fly">✈️ 飞机</button>
-            <button class="transport-btn" data-mode="train">🚄 高铁</button>
-            <button class="transport-btn" data-mode="drive">🚗 自驾</button>
-          </div>
+        <select id="route-to"><option value="">更改到达地</option></select>
+        <div class="transport-btns" id="transport-btns">
+          <button class="transport-btn active" data-mode="fly">✈️ 飞机</button>
+          <button class="transport-btn" data-mode="train">🚄 高铁</button>
+          <button class="transport-btn" data-mode="drive">🚗 自驾</button>
         </div>
-        <button class="btn btn-primary btn-sm" onclick="planRoute()">🗺️ 规划路线</button>
+        <button class="btn btn-primary btn-sm" onclick="planRoute()">🗺️ 规划</button>
       </div>
       <div id="route-results" class="route-results"></div>
     </div>
@@ -539,6 +562,7 @@ function renderWeatherCards(cities,cid){
     const sunH=daily.sunshine_duration?daily.sunshine_duration[0]/3600:null;
     const sDays=countSunnyDays(d),maxS=14,sunPct=sunH!==null?Math.min((sunH/maxS)*100,100):0;
     const isS=w.group==='sunny',isR=w.group==='rainy'||w.group==='storm';
+    const recommendChase=isS&&(daily?.weather_code?.slice(0,4)||[]).every(c=>getWeatherInfo(c).group==='sunny');
     const uv=d.current.uv_index,uvI=getUVInfo(uv);
     const suit=getDateSuitability(d,dateFilterStart,dateFilterEnd);
     // Fav button
@@ -555,14 +579,14 @@ function renderWeatherCards(cities,cid){
         const fw=getWeatherInfo(daily.weather_code[i]),dt=new Date(daily.time[i]);
         const diff=Math.round((dt-today)/864e5);
         const lb=diff===1?'明天':diff===2?'后天':(dt.getMonth()+1)+'/'+dt.getDate();
-        fH+=`<div class="forecast-day"><div class="fd-label">${lb}</div><div class="fd-icon">${fw.icon}</div><div class="fd-temp">${Math.round(daily.temperature_2m_max[i])}°/${Math.round(daily.temperature_2m_min[i])}°</div></div>`;
+        fH+=`<div class="forecast-day"><div class="fd-label">${lb}</div><div class="fd-icon">${fw.icon}</div></div>`;
       }
       fH+='</div>';
     }
     return `<div class="weather-card ${isS?'sunny':''} ${isR?'rainy':''}" onclick="openCityDetail('${c.name.replace(/'/g,"\\'")}')">
       <button class="${favCls}" onclick="event.stopPropagation();toggleFav('${c.name.replace(/'/g,"\\'")}');applyFiltersAndRender();renderFavorites()">${favIcon}</button>
       <div class="card-header"><div><span class="city-name">${c.name}</span><span class="city-region">${regionLabel(c.region)}</span></div><div class="weather-icon">${w.icon}</div></div>
-      <div class="card-temp">${Math.round(d.current.temperature_2m)}<span class="unit">°C</span></div>
+      <div class="card-temp-row"><div class="card-temp">${Math.round(d.current.temperature_2m)}<span class="unit">°C</span></div>${recommendChase?'<div class="sun-badge">✨ 推荐追光</div>':''}</div>
       <div class="card-desc"><span>${w.desc} · 体感${Math.round(d.current.apparent_temperature)}°C</span><span class="uv-badge ${uvI.cls}">UV ${uv!=null?uv:'--'}</span></div>
       <div class="card-meta">
         <span>💨${Math.round(d.current.wind_speed_10m)}km/h</span>
@@ -571,7 +595,6 @@ function renderWeatherCards(cities,cid){
       </div>
       ${dateBadge}
       <div class="sunshine-bar-wrap"><div class="sunshine-bar-label"><span>日照</span><span>${sunH!==null?sunH.toFixed(1)+'h':'--'}</span></div><div class="sunshine-bar"><div class="sunshine-bar-fill" style="width:${sunPct}%"></div></div></div>
-      ${isS?'<div class="sun-badge">✨ 推荐追光</div>':''}
       ${fH}
     </div>`;
   }).join('');
@@ -586,15 +609,14 @@ function renderFavorites(){
 
 function updateTimestamp(){
   const el=document.getElementById('update-info');
-  el.textContent=lastUpdateTime?`数据更新于 ${lastUpdateTime.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})} · 来源 Open-Meteo（CMA 模型）`:'等待加载…';
+  el.textContent=lastUpdateTime?`${lastUpdateTime.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})} 更新`:'等待加载…';
 }
 
-// ===== Date Filter =====
-function applyDateFilter(){
-  dateFilterStart=document.getElementById('date-start').value;
-  dateFilterEnd=document.getElementById('date-end').value;
-  if(dateFilterStart&&dateFilterEnd)applyFiltersAndRender();
-  else showToast('请选择起止日期');
+// ===== Date Filter (auto-trigger) =====
+function onDateChange(){
+  const s=document.getElementById('date-start').value,e=document.getElementById('date-end').value;
+  if(s&&e){dateFilterStart=s;dateFilterEnd=e;applyFiltersAndRender()}
+  else if(!s&&!e){dateFilterStart=null;dateFilterEnd=null;applyFiltersAndRender()}
 }
 function clearDateFilter(){
   dateFilterStart=null;dateFilterEnd=null;
@@ -618,10 +640,13 @@ async function refreshAllCities(){
     const res=await Promise.allSettled(batch.map(c=>fetchWeather(c)));
     res.forEach((r,idx)=>{if(r.status==='fulfilled')weatherCache[cityKey(batch[idx])]={...r.value,_city:batch[idx]}});
     applyFiltersAndRender();
+    if(i===0&&window._dismissSplash)window._dismissSplash();
   }
-  lastUpdateTime=new Date();updateTimestamp();isLoading=false;btn.disabled=false;btn.textContent='🔄 刷新';
-  document.getElementById('quick-poster-bar').style.display='flex';
+  lastUpdateTime=new Date();updateTimestamp();isLoading=false;btn.disabled=false;btn.textContent='🔄';
+  document.getElementById('btn-daily-brief').style.display='inline-flex';
   showToast('天气数据已更新 ✨');renderFavorites();
+  // Auto-plan default route (广州→北京) after initial load
+  if(!window._routeAutoPlanned){window._routeAutoPlanned=true;planRoute()}
 }
 
 function applyFiltersAndRender(){
@@ -890,7 +915,32 @@ function populateRouteSelects(){
   const from=document.getElementById('route-from'),to=document.getElementById('route-to');
   const rg={};CITIES.forEach(c=>{if(!rg[c.region])rg[c.region]=[];rg[c.region].push(c)});
   let opts='';for(const[r,cs]of Object.entries(rg)){opts+=`<optgroup label="${regionLabel(r)}">`;cs.forEach(c=>{opts+=`<option value="${c.name}">${c.name}</option>`});opts+='</optgroup>'}
-  from.innerHTML='<option value="">选择出发城市</option>'+opts;to.innerHTML='<option value="">选择目的地</option>'+opts;
+  from.innerHTML='<option value="">更改出发地</option>'+opts;to.innerHTML='<option value="">更改到达地</option>'+opts;
+  // Default: 广州 → 北京
+  from.value='广州';to.value='北京';
+}
+
+// Project point P onto line segment AB, return projection parameter t (0~1)
+function projParam(px,py,ax,ay,bx,by){
+  const dx=bx-ax,dy=by-ay,lenSq=dx*dx+dy*dy;
+  if(lenSq===0)return 0;
+  return Math.max(0,Math.min(1,((px-ax)*dx+(py-ay)*dy)/lenSq));
+}
+
+// Get cities along the route for train/drive (geographic projection)
+function getAlongRouteCities(fc,tc){
+  const chinaCities=CITIES.filter(c=>c.region==='china'&&c.name!==fc.name&&c.name!==tc.name);
+  const scored=chinaCities.map(c=>{
+    const t=projParam(c.lon,c.lat,fc.lon,fc.lat,tc.lon,tc.lat);
+    // Distance from city to the line segment
+    const projLon=fc.lon+t*(tc.lon-fc.lon),projLat=fc.lat+t*(tc.lat-fc.lat);
+    const dist=Math.sqrt((c.lon-projLon)**2+(c.lat-projLat)**2);
+    // Convert approx degree distance to km (1 deg ≈ 100km)
+    const distKm=dist*100;
+    return{...c,t,distKm};
+  });
+  // Filter: within 200km of the route line, sort by t (position along route)
+  return scored.filter(c=>c.distKm<=200).sort((a,b)=>a.t-b.t);
 }
 
 async function planRoute(){
@@ -899,22 +949,66 @@ async function planRoute(){
   if(fn===tn){showToast('出发地和目的地不能相同');return}
   const fc=CITIES.find(c=>c.name===fn),tc=CITIES.find(c=>c.name===tn);
   res.innerHTML='<div class="loading-spinner"><div class="spinner"></div><span>正在规划…</span></div>';res.classList.add('visible');
-  for(const c of[fc,tc]){if(!weatherCache[cityKey(c)]){try{weatherCache[cityKey(c)]={...(await fetchWeather(c)),_city:c}}catch(e){showToast('获取天气失败');return}}}
-  const fd=weatherCache[cityKey(fc)],td=weatherCache[cityKey(tc)],fw=getWeatherInfo(fd.current.weather_code),tw=getWeatherInfo(td.current.weather_code);
-  const nearby=CITIES.filter(c=>c.name!==fn&&c.name!==tn).map(c=>{const d1=Math.sqrt((c.lat-fc.lat)**2+(c.lon-fc.lon)**2),d2=Math.sqrt((c.lat-tc.lat)**2+(c.lon-tc.lon)**2),tot=Math.sqrt((fc.lat-tc.lat)**2+(fc.lon-tc.lon)**2),det=(d1+d2)/Math.max(tot,0.01);return{...c,score:1/Math.max(det-0.5,0.1)}}).filter(c=>currentTransport!=='fly'?c.region==='china':true).sort((a,b)=>b.score-a.score).slice(0,12);
-  const unc=nearby.filter(c=>!weatherCache[cityKey(c)]);
+
+  // Determine which cities need data
+  let routeCities=[fc,tc];
+  if(currentTransport!=='fly'){
+    const along=getAlongRouteCities(fc,tc);
+    routeCities=routeCities.concat(along);
+  }
+  // Fetch missing weather
+  const unc=routeCities.filter(c=>!weatherCache[cityKey(c)]);
   if(unc.length){const br=await Promise.allSettled(unc.map(c=>fetchWeather(c)));br.forEach((r,i)=>{if(r.status==='fulfilled')weatherCache[cityKey(unc[i])]={...r.value,_city:unc[i]}})}
-  const sunny=nearby.filter(c=>{const d=weatherCache[cityKey(c)];return d&&getWeatherInfo(d.current.weather_code).group==='sunny'}).slice(0,5);
-  const rainy=nearby.filter(c=>{const d=weatherCache[cityKey(c)];return d&&(getWeatherInfo(d.current.weather_code).group==='rainy'||getWeatherInfo(d.current.weather_code).group==='storm')}).slice(0,5);
+
+  const fd=weatherCache[cityKey(fc)],td=weatherCache[cityKey(tc)],fw=getWeatherInfo(fd.current.weather_code),tw=getWeatherInfo(td.current.weather_code);
   const tl={fly:'✈️ 飞机',train:'🚄 高铁',drive:'🚗 自驾'}[currentTransport];
-  let v='';if(fw.group==='sunny'&&tw.group==='sunny')v='🌟 完美！两地都是晴天';else if(fw.group==='sunny')v=`⚠️ ${fn}晴天，但${tn}「${tw.desc}」`;else if(tw.group==='sunny')v=`🌈 ${fn}「${fw.desc}」，${tn}晴天值得去`;else v='🌧️ 两地都不太理想，看推荐城市';
-  let tlHtml=`<div class="route-timeline"><div class="timeline-city origin" onclick="openCityDetail('${fn}')"><div class="tc-name">${fn}</div><div class="tc-weather">${fw.icon} ${Math.round(fd.current.temperature_2m)}°C</div></div>`;
-  sunny.slice(0,3).forEach(c=>{const d=weatherCache[cityKey(c)],w=getWeatherInfo(d.current.weather_code);tlHtml+=`<div class="timeline-arrow">→</div><div class="timeline-city waypoint" onclick="openCityDetail('${c.name}')"><div class="tc-name">${c.name}</div><div class="tc-weather">${w.icon} ${Math.round(d.current.temperature_2m)}°C</div></div>`});
-  tlHtml+=`<div class="timeline-arrow">→</div><div class="timeline-city destination" onclick="openCityDetail('${tn}')"><div class="tc-name">${tn}</div><div class="tc-weather">${tw.icon} ${Math.round(td.current.temperature_2m)}°C</div></div></div>`;
-  res.innerHTML=`<div class="route-summary"><h3>${fn} ${fw.icon} → ${tn} ${tw.icon}</h3><p class="route-verdict">${v}</p><p class="route-transport">${tl}</p></div>
-  ${sunny.length?`<div class="route-section-title">📍 推荐路线</div>${tlHtml}`:''}
-  ${sunny.length>3?`<div class="route-section-title">✨ 更多阳光城市</div><div class="route-cities">${sunny.slice(3).map(c=>{const d=weatherCache[cityKey(c)],w=getWeatherInfo(d.current.weather_code);return`<div class="route-city-card suggested" onclick="openCityDetail('${c.name}')"><div class="rcc-name">${c.name}</div><div class="rcc-weather">${w.icon} ${w.desc} · ${Math.round(d.current.temperature_2m)}°C</div></div>`}).join('')}</div>`:''}
-  ${rainy.length?`<div class="route-section-title">🌧️ 建议避开</div><div class="route-cities">${rainy.map(c=>{const d=weatherCache[cityKey(c)],w=getWeatherInfo(d.current.weather_code);return`<div class="route-city-card" onclick="openCityDetail('${c.name}')"><div class="rcc-name">${c.name}</div><div class="rcc-weather">${w.icon} ${w.desc} · ${Math.round(d.current.temperature_2m)}°C</div></div>`}).join('')}</div>`:''}`;
+  let v='';if(fw.group==='sunny'&&tw.group==='sunny')v='🌟 完美！两地都是晴天';else if(fw.group==='sunny')v=`⚠️ ${fn}晴天，但${tn}「${tw.desc}」`;else if(tw.group==='sunny')v=`🌈 ${fn}「${fw.desc}」，${tn}晴天值得去`;else v='🌧️ 两地都不太理想，看沿途天气';
+
+  // Build Z-shape timeline
+  let citiesInRoute;
+  if(currentTransport==='fly'){
+    citiesInRoute=[fc,tc];
+  }else{
+    const along=getAlongRouteCities(fc,tc);
+    citiesInRoute=[fc,...along,tc];
+  }
+  const PER_ROW=5;
+  const rows=[];
+  for(let i=0;i<citiesInRoute.length;i+=PER_ROW)rows.push(citiesInRoute.slice(i,i+PER_ROW));
+
+  let tlHtml='<div class="route-timeline">';
+  rows.forEach((row,ri)=>{
+    const reverse=ri%2===1;
+    const displayRow=reverse?[...row].reverse():row;
+    const arrow=reverse?'←':'→';
+    tlHtml+=`<div class="tl-row ${reverse?'reverse':''}">`;
+    displayRow.forEach((c,i)=>{
+      const d=weatherCache[cityKey(c)],w=getWeatherInfo(d.current.weather_code);
+      const isOrigin=citiesInRoute.indexOf(c)===0;
+      const isDest=citiesInRoute.indexOf(c)===citiesInRoute.length-1;
+      const cls=isOrigin?'origin':isDest?'destination':'waypoint';
+      if(i>0)tlHtml+=`<div class="timeline-arrow">${arrow}</div>`;
+      tlHtml+=`<div class="timeline-city ${cls}" onclick="openCityDetail('${c.name}')"><div class="tc-name">${c.name}</div><div class="tc-weather">${w.icon} ${Math.round(d.current.temperature_2m)}°C</div></div>`;
+    });
+    tlHtml+='</div>';
+    // Turn indicator between rows
+    if(ri<rows.length-1){
+      const turnDir=reverse?'left':'right';
+      tlHtml+=`<div class="tl-turn ${turnDir}">${reverse?'↙':'↘'}</div>`;
+    }
+  });
+  tlHtml+='</div>';
+
+  // Find sunny/rainy cities for additional suggestions (non-route)
+  const routeNames=new Set(citiesInRoute.map(c=>c.name));
+  const otherCities=CITIES.filter(c=>!routeNames.has(c.name)&&(currentTransport==='fly'||c.region==='china'));
+  const sunny=otherCities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&getWeatherInfo(d.current.weather_code).group==='sunny'}).slice(0,4);
+  const rainy=otherCities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&(getWeatherInfo(d.current.weather_code).group==='rainy'||getWeatherInfo(d.current.weather_code).group==='storm')}).slice(0,3);
+
+  res.innerHTML=`<div class="route-summary"><h3>${fn} ${fw.icon} → ${tn} ${tw.icon}</h3><p class="route-verdict">${v}</p><p class="route-transport">${tl}${currentTransport!=='fly'?' · 沿途'+(citiesInRoute.length-2)+'站':''}</p></div>
+${tlHtml}
+${sunny.length?`<div class="route-section-title">✨ 其他阳光推荐</div><div class="route-cities">${sunny.map(c=>{const d=weatherCache[cityKey(c)],w=getWeatherInfo(d.current.weather_code);return`<div class="route-city-card suggested" onclick="openCityDetail('${c.name}')"><div class="rcc-name">${c.name}</div><div class="rcc-weather">${w.icon} ${w.desc} · ${Math.round(d.current.temperature_2m)}°C</div></div>`}).join('')}</div>`:''}
+${rainy.length?`<div class="route-section-title">🌧️ 建议避开</div><div class="route-cities">${rainy.map(c=>{const d=weatherCache[cityKey(c)],w=getWeatherInfo(d.current.weather_code);return`<div class="route-city-card" onclick="openCityDetail('${c.name}')"><div class="rcc-name">${c.name}</div><div class="rcc-weather">${w.icon} ${w.desc} · ${Math.round(d.current.temperature_2m)}°C</div></div>`}).join('')}</div>`:''}`;
 }
 
 // ===== Toast =====
@@ -922,11 +1016,12 @@ function showToast(m,d=2500){const t=document.getElementById('toast');t.textCont
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded',()=>{
-  // Set date defaults
-  const today=new Date(),maxDate=new Date(today);maxDate.setDate(maxDate.getDate()+6);
-  const fmt=d=>d.toISOString().split('T')[0];
-  document.getElementById('date-start').min=fmt(today);document.getElementById('date-start').max=fmt(maxDate);
-  document.getElementById('date-end').min=fmt(today);document.getElementById('date-end').max=fmt(maxDate);
+  // Populate date selects (M/D format, today ~ today+16)
+  const today=new Date();
+  for(let i=0;i<16;i++){const d=new Date(today);d.setDate(d.getDate()+i);const v=d.toISOString().split('T')[0],lb=(d.getMonth()+1)+'/'+d.getDate();
+    document.getElementById('date-start').add(new Option(lb,v));
+    document.getElementById('date-end').add(new Option(lb,v));
+  }
   // Tabs
   document.querySelectorAll('.tab-btn').forEach(b=>{b.addEventListener('click',()=>{
     document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
@@ -935,6 +1030,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(b.dataset.tab==='fav-tab')renderFavorites();
   })});
   // Filters
+  document.getElementById('date-start').addEventListener('change',onDateChange);
+  document.getElementById('date-end').addEventListener('change',onDateChange);
   document.getElementById('region-filter').addEventListener('change',()=>{
     const r=document.getElementById('region-filter').value,cs=r==='all'?CITIES:CITIES.filter(c=>c.region===r);
     if(!cs.some(c=>weatherCache[cityKey(c)]))refreshAllCities();else applyFiltersAndRender();
@@ -1163,6 +1260,37 @@ function mapClearRoute(){
   document.getElementById('map-route-summary').innerHTML='';
   if(mapChart){mapChart.setOption(mapBuildOpt(mapGetMapData()),true)}
 }
+</script>
+</div><!-- end main-app -->
+<!-- Splash Controller -->
+<script>
+(function(){
+  const bar=document.getElementById('splash-bar'),splash=document.getElementById('splash'),
+        cl=document.getElementById('curtain-l'),cr=document.getElementById('curtain-r'),
+        app=document.getElementById('main-app');
+  let progress=0;
+  function tick(){
+    progress+=Math.random()*12+3;
+    if(progress>90)progress=90;
+    bar.style.width=progress+'%';
+    if(progress<90)setTimeout(tick,200+Math.random()*300);
+  }
+  setTimeout(tick,400);
+  // Dismiss splash when first data batch arrives or after timeout
+  function dismissSplash(){
+    if(splash._dismissed)return;splash._dismissed=true;
+    bar.style.width='100%';
+    setTimeout(()=>{
+      splash.style.transition='opacity 0.5s ease';splash.style.opacity='0';
+      cl.classList.add('open');cr.classList.add('open');
+      app.classList.add('reveal');
+      setTimeout(()=>{splash.style.display='none';cl.style.display='none';cr.style.display='none'},1000);
+    },300);
+  }
+  window._dismissSplash=dismissSplash;
+  // Fallback: auto dismiss after 4s
+  setTimeout(dismissSplash,4000);
+})();
 </script>
 </body>
 </html>
