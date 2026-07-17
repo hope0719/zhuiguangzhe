@@ -648,13 +648,25 @@ async function refreshAllCities(){
   const cities=rf==='all'?CITIES:CITIES.filter(c=>c.region===rf);
   // Immediately render all cities as placeholder cards
   applyFiltersAndRender();
+
+  // Phase 1: Load first 12 China cities first (instant visible results)
+  const chinaCities=cities.filter(c=>c.region==='china');
+  const firstBatch=chinaCities.slice(0,12);
+  if(firstBatch.length){
+    const res=await Promise.allSettled(firstBatch.map(c=>fetchWeather(c)));
+    res.forEach((r,i)=>{if(r.status==='fulfilled')weatherCache[cityKey(firstBatch[i])]={...r.value,_city:firstBatch[i]}});
+    applyFiltersAndRender();
+    if(window._dismissSplash)window._dismissSplash();
+  }
+
+  // Phase 2: Load remaining cities in background batches of 10
+  const remaining=cities.filter(c=>!firstBatch.includes(c));
   const bs=10;
-  for(let i=0;i<cities.length;i+=bs){
-    const batch=cities.slice(i,i+bs);
+  for(let i=0;i<remaining.length;i+=bs){
+    const batch=remaining.slice(i,i+bs);
     const res=await Promise.allSettled(batch.map(c=>fetchWeather(c)));
     res.forEach((r,idx)=>{if(r.status==='fulfilled')weatherCache[cityKey(batch[idx])]={...r.value,_city:batch[idx]}});
     applyFiltersAndRender();
-    if(i===0&&window._dismissSplash)window._dismissSplash();
   }
   lastUpdateTime=new Date();updateTimestamp();isLoading=false;btn.disabled=false;btn.textContent='🔄';
   document.getElementById('btn-daily-brief').style.display='inline-flex';
