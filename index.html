@@ -656,8 +656,6 @@ async function refreshAllCities(){
   showToast('天气数据已更新 ✨');renderFavorites();
   // Auto-plan default route (广州→北京) after initial load
   if(!window._routeAutoPlanned){window._routeAutoPlanned=true;planRoute()}
-  // Preload map weather data in background so map tab loads instantly
-  mapPreloadData();
 }
 
 function applyFiltersAndRender(){
@@ -682,11 +680,20 @@ function applyFiltersAndRender(){
 }
 
 // ===== Detail Modal =====
-function openCityDetail(name){
+async function openCityDetail(name){
   const city=CITIES.find(c=>c.name===name);
   if(!city){showToast('未找到城市信息');return}
-  const d=weatherCache[cityKey(city)];
-  if(!d||!d.current){showToast('天气数据加载中，请稍后再试');return}
+  let d=weatherCache[cityKey(city)];
+  if(!d||!d.current){
+    // 立即加载该城市最新数据
+    showToast('正在加载 '+name+' 天气数据…');
+    try{
+      const r=await fetchWeather(city);
+      weatherCache[cityKey(city)]={...r,_city:city};
+      d=weatherCache[cityKey(city)];
+      applyFiltersAndRender();
+    }catch(e){showToast(name+' 数据加载失败，请稍后重试');return}
+  }
   const w=getWeatherInfo(d.current.weather_code),daily=d.daily,sDays=countSunnyDays(d);
   const uv=d.current.uv_index,uvI=getUVInfo(uv);
   const sunH=daily.sunshine_duration?daily.sunshine_duration[0]/3600:null;
@@ -1060,7 +1067,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.querySelectorAll('.transport-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentTransport=b.dataset.mode;
   })});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closePosterModal()}});
-  populateRouteSelects();refreshAllCities();
+  populateRouteSelects();
+  // 先渲染首页骨架卡片
+  renderSkeleton(document.getElementById('weather-grid'),12);
+  // 优先加载地图数据（GeoJSON + 天气），完成后加载首页天气
+  mapPreloadAll().then(()=>{refreshAllCities()});
 });
 </script>
 <script src="./_shared/js/echarts.min.js"></script>
@@ -1196,16 +1207,11 @@ async function mapPreloadData(){
   }
 }
 
-async function mapEnsureInit(){
-  if(mapInited){mapRender();return;}
-  if(mapLoading)return;
-  mapLoading=true;
-  const loadText=document.getElementById('map-load-text');
-  // Reset loading overlay visibility
-  const ld=document.getElementById('map-loading');
-  if(ld){ld.style.display='flex';ld.style.opacity='1';}
-  if(loadText){loadText.style.display='';loadText.textContent='正在加载地图…';}
-  // Load GeoJSON first (with placeholder)
+// Preload GeoJSON + weather data (called on page load, before home weather)
+async function mapPreloadAll(){
+  if(window._mapPreloadDone)return;
+  window._mapPreloadDone=true;
+  // 1. Load & register GeoJSON
   try{
     const geoUrls=[
       'https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json',
@@ -1214,22 +1220,54 @@ async function mapEnsureInit(){
     ];
     let geo=null;
     for(const url of geoUrls){
-      try{
-        const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
-        if(r.ok){geo=await r.json();break}
-      }catch(e2){continue}
+      try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){geo=await r.json();break}}catch(e2){continue}
     }
-    if(!geo)throw new Error('All geo sources failed');
-    echarts.registerMap('china',geo);mapGeoLoaded=true;
-    mapInitChart();
-    // Render placeholder map immediately with score=0 for all
-    mapRender();
-    // Then load weather in background, updating live
-    loadText.textContent='天气数据 0/'+Object.keys(MAP_PROVINCES).length;
+    if(geo){echarts.registerMap('china',geo);mapGeoLoaded=true}
+  }catch(e){}
+  // 2. Load weather data for all provinces
+  await mapPreloadData();
+}
+
+async function mapEnsureInit(){
+  if(mapInited){mapRender();return;}
+  if(mapLoading)return;
+  mapLoading=true;
+  const loadText=document.getElementById('map-load-text');
+  const ld=document.getElementById('map-loading');
+  // If GeoJSON not yet loaded (preload failed or still running), load it now
+  if(!mapGeoLoaded){
+    if(ld){ld.style.display='flex';ld.style.opacity='1';}
+    if(loadText){loadText.style.display='';loadText.textContent='正在加载地图…';}
+    try{
+      const geoUrls=[
+        'https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json',
+        'https://geojson.cn/api/data/china/100000.json',
+        'https://raw.githubusercontent.com/apache/echarts/4.9.0/map/json/china.json'
+      ];
+      let geo=null;
+      for(const url of geoUrls){
+        try{const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(r.ok){geo=await r.json();break}}catch(e2){continue}
+      }
+      if(!geo)throw new Error('All geo sources failed');
+      echarts.registerMap('china',geo);mapGeoLoaded=true;
+    }catch(e){
+      mapLoading=false;
+      if(loadText)loadText.textContent='地图加载失败，请刷新重试';
+      return;
+    }
+  }
+  // GeoJSON ready — init chart and render immediately
+  mapInitChart();
+  mapRender();
+  // If weather data not fully loaded yet, continue loading with live updates
+  if(!mapDataPreloaded||(Object.keys(mapWCache).length<Object.keys(MAP_PROVINCES).length)){
+    if(loadText){loadText.style.display='';loadText.textContent='天气数据 '+Object.keys(mapWCache).length+'/'+Object.keys(MAP_PROVINCES).length;}
+    if(ld){ld.style.display='flex';ld.style.opacity='1';}
     mapLoadAll();
-  }catch(e){
+  }else{
+    // All data already preloaded — hide loading instantly
+    if(ld){ld.style.display='none';}
     mapLoading=false;
-    if(loadText)loadText.textContent='地图加载失败，请刷新重试';
   }
 }
 
