@@ -656,6 +656,8 @@ async function refreshAllCities(){
   showToast('天气数据已更新 ✨');renderFavorites();
   // Auto-plan default route (广州→北京) after initial load
   if(!window._routeAutoPlanned){window._routeAutoPlanned=true;planRoute()}
+  // Preload map weather data in background so map tab loads instantly
+  mapPreloadData();
 }
 
 function applyFiltersAndRender(){
@@ -1103,13 +1105,17 @@ const MAP_CITIES=[
   {name:"呼和浩特",lat:40.84,lon:111.75},{name:"西宁",lat:36.62,lon:101.78},
   {name:"银川",lat:38.49,lon:106.23},{name:"石家庄",lat:38.04,lon:114.51}
 ];
-let mapChart=null,mapInited=false,mapGeoLoaded=false,mapLoading=false;
+let mapChart=null,mapInited=false,mapGeoLoaded=false,mapLoading=false,mapDataPreloaded=false;
 const mapWCache={};
+function MAP_PROVINCES_FIND(lat,lon){for(const n in MAP_PROVINCES){const v=MAP_PROVINCES[n];if(Math.abs(v.lat-lat)<0.01&&Math.abs(v.lon-lon)<0.01)return CITIES.find(c=>c.name===v.capital)}return null}
 
 function mapWK(c){return WMO_CODES[c]||{desc:'未知',icon:'❓',group:'cloudy'}}
 function mapFetch(lat,lon){
   const k=lat.toFixed(2)+','+lon.toFixed(2);
   if(mapWCache[k])return Promise.resolve(mapWCache[k]);
+  // Reuse main weather cache if this city was already loaded
+  const c=MAP_PROVINCES_FIND(lat,lon);
+  if(c){const d=weatherCache[cityKey(c)];if(d&&d.current){mapWCache[k]=d;return Promise.resolve(d)}}
   const u='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,weather_code,apparent_temperature,relative_humidity_2m,wind_speed_10m&daily=weather_code&timezone=auto&forecast_days=7';
   const ctrl=new AbortController();
   const timer=setTimeout(()=>ctrl.abort(),8000);
@@ -1166,7 +1172,7 @@ function mapRender(){
 
 async function mapLoadAll(){
   const items=Object.entries(MAP_PROVINCES).map(([n,v])=>({name:n,lat:v.lat,lon:v.lon}));
-  const bs=8;const loadText=document.getElementById('map-load-text');
+  const bs=15;const loadText=document.getElementById('map-load-text');
   for(let i=0;i<items.length;i+=bs){
     await Promise.allSettled(items.slice(i,i+bs).map(it=>mapFetch(it.lat,it.lon)));
     if(loadText)loadText.textContent='天气数据 '+Math.min(i+bs,items.length)+'/'+items.length;
@@ -1177,6 +1183,17 @@ async function mapLoadAll(){
   const ld=document.getElementById('map-loading');
   if(ld){ld.style.opacity='0';setTimeout(()=>{if(ld)ld.style.display='none'},500);}
   mapLoading=false;
+}
+
+// Preload map weather data in background (without rendering)
+async function mapPreloadData(){
+  if(mapDataPreloaded)return;
+  mapDataPreloaded=true;
+  const items=Object.entries(MAP_PROVINCES).map(([n,v])=>({name:n,lat:v.lat,lon:v.lon}));
+  const bs=15;
+  for(let i=0;i<items.length;i+=bs){
+    await Promise.allSettled(items.slice(i,i+bs).map(it=>mapFetch(it.lat,it.lon)));
+  }
 }
 
 async function mapEnsureInit(){
