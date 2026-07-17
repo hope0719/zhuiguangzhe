@@ -680,15 +680,18 @@ function applyFiltersAndRender(){
   const wf=document.getElementById('weather-filter').value;
   const sf=document.getElementById('sort-filter').value;
   let cities=rf==='all'?[...CITIES]:CITIES.filter(c=>c.region===rf);
-  if(wf==='sunny'){cities=cities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&getWeatherInfo(d.current.weather_code).group==='sunny'})}
-  else if(wf==='dry'){cities=cities.filter(c=>{const d=weatherCache[cityKey(c)];if(!d)return false;const g=getWeatherInfo(d.current.weather_code).group;return g!=='rainy'&&g!=='storm'})}
+  if(wf==='sunny'){cities=cities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&d.current&&getWeatherInfo(d.current.weather_code).group==='sunny'})}
+  else if(wf==='dry'){cities=cities.filter(c=>{const d=weatherCache[cityKey(c)];if(!d||!d.current)return false;const g=getWeatherInfo(d.current.weather_code).group;return g!=='rainy'&&g!=='storm'})}
   else if(wf==='favorites'){cities=cities.filter(c=>isFav(c.name))}
-  if(sf==='sunshine')cities.sort((a,b)=>{const ha=getSunshineHours(weatherCache[cityKey(a)]),hb=getSunshineHours(weatherCache[cityKey(b)]);return(hb??-1)-(ha??-1)});
-  else if(sf==='temp')cities.sort((a,b)=>(weatherCache[cityKey(b)]?.current?.temperature_2m||0)-(weatherCache[cityKey(a)]?.current?.temperature_2m||0));
-  else if(sf==='sunny-days')cities.sort((a,b)=>countSunnyDays(weatherCache[cityKey(b)])-countSunnyDays(weatherCache[cityKey(a)]));
+  // Sort: only applies within the same region group; China always stays on top
+  const regionOrder={china:0,asia:1,europe:2,oceania:3,americas:4};
+  cities.sort((a,b)=>regionOrder[a.region]-regionOrder[b.region]);
+  if(sf==='sunshine')cities.sort((a,b)=>{const ra=regionOrder[a.region],rb=regionOrder[b.region];if(ra!==rb)return ra-rb;const ha=getSunshineHours(weatherCache[cityKey(a)]),hb=getSunshineHours(weatherCache[cityKey(b)]);return(hb??-1)-(ha??-1)});
+  else if(sf==='temp')cities.sort((a,b)=>{const ra=regionOrder[a.region],rb=regionOrder[b.region];if(ra!==rb)return ra-rb;return(weatherCache[cityKey(b)]?.current?.temperature_2m||0)-(weatherCache[cityKey(a)]?.current?.temperature_2m||0)});
+  else if(sf==='sunny-days')cities.sort((a,b)=>{const ra=regionOrder[a.region],rb=regionOrder[b.region];if(ra!==rb)return ra-rb;return countSunnyDays(weatherCache[cityKey(b)])-countSunnyDays(weatherCache[cityKey(a)])});
   else if(sf==='uv-safety')cities.sort((a,b)=>{
+    const ra=regionOrder[a.region],rb=regionOrder[b.region];if(ra!==rb)return ra-rb;
     const ua=weatherCache[cityKey(a)]?.current?.uv_index,bv=weatherCache[cityKey(b)]?.current?.uv_index;
-    // Prefer UV 3-6 (moderate, healthy sunshine)
     const scoreA=ua==null?-99:(ua>=3&&ua<=6)?100-Math.abs(ua-4.5)*10:ua<3?ua*5:Math.max(0,100-ua*8);
     const scoreB=bv==null?-99:(bv>=3&&bv<=6)?100-Math.abs(bv-4.5)*10:bv<3?bv*5:Math.max(0,100-bv*8);
     return scoreB-scoreA;
