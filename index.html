@@ -1166,7 +1166,10 @@ function mapBuildOpt(data,lines,scatter){
     label:{show:true,fontSize:10,color:'#8B7D6B',formatter:p=>p.name.replace(/(省|市|自治区|壮族|维吾尔|回族|特别行政区)/g,'')},
     itemStyle:{areaColor:'#FFF8E7',borderColor:'#F0E4D4',borderWidth:1},
     emphasis:{label:{show:true,color:'#3D2C2C',fontSize:12,fontWeight:'bold'},itemStyle:{areaColor:'#FDE68A',borderColor:'#E8923F',borderWidth:2}},
-    data:data,selectedMode:false}];
+    data:data,selectedMode:false,
+    // Hide 南海诸岛: no data, no label, no interaction
+    nameMap:{'南海诸岛':''},
+    regions:[{name:'南海诸岛',itemStyle:{opacity:0},label:{show:false},emphasis:{label:{show:false},itemStyle:{opacity:0}}}]}];
   if(lines){if(Array.isArray(lines))s.push(...lines);else s.push(lines);}
   if(scatter)s.push(scatter);
   return{backgroundColor:'transparent',
