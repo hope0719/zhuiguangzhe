@@ -1,3 +1,10 @@
 # 非静态部署内容，不上传
 追光者_报名帖文案.md
 .workbuddy/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
