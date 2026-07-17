@@ -5,9 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>追光者 - 寻找阳光的方向</title>
+<link rel="preconnect" href="https://api.open-meteo.com">
+<link rel="preconnect" href="https://geo.datav.aliyun.com">
+<link rel="dns-prefetch" href="https://geojson.cn">
+<link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+<link rel="preload" href="./assets/splash-bg.jpg" as="image">
 <style>
-@font-face{font-family:'Lora';src:url('./_shared/fonts/Lora-Regular.ttf') format('truetype');font-weight:400;font-style:normal}
-@font-face{font-family:'Lora';src:url('./_shared/fonts/Lora-Bold.ttf') format('truetype');font-weight:700;font-style:normal}
+@font-face{font-family:'Lora';src:url('./_shared/fonts/Lora-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Lora';src:url('./_shared/fonts/Lora-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
 :root{--bg:#FDF8F0;--bg2:#FFFCF7;--ink:#3D2C2C;--muted:#9E8576;--rule:#EFE5D8;--accent:#E5903F;--accent2:#F7C657;--accent3:#F6A65E;--success:#6A9C5A;--danger:#D2765F;--shadow-sm:0 1px 4px rgba(61,44,44,0.04);--shadow-md:0 6px 24px rgba(61,44,44,0.08);--shadow-lg:0 16px 48px rgba(61,44,44,0.1);--radius-sm:10px;--radius-md:16px;--radius-lg:22px;--radius-xl:28px}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Lora','PingFang SC','Noto Sans CJK SC','Microsoft YaHei',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh;overflow-x:hidden}
@@ -1224,8 +1229,20 @@ async function mapPreloadAll(){
     }
     if(geo){echarts.registerMap('china',geo);mapGeoLoaded=true}
   }catch(e){}
-  // 2. Load weather data for all provinces
-  await mapPreloadData();
+  // 2. Load first batch of weather data, then dismiss splash
+  const items=Object.entries(MAP_PROVINCES).map(([n,v])=>({name:n,lat:v.lat,lon:v.lon}));
+  const firstBatch=items.slice(0,15);
+  await Promise.allSettled(firstBatch.map(it=>mapFetch(it.lat,it.lon)));
+  // Dismiss splash now — map has data, app is usable
+  if(window._dismissSplash)window._dismissSplash();
+  // 3. Continue loading remaining provinces in background
+  const rest=items.slice(15);
+  const bs=15;
+  for(let i=0;i<rest.length;i+=bs){
+    await Promise.allSettled(rest.slice(i,i+bs).map(it=>mapFetch(it.lat,it.lon)));
+    if(mapInited&&mapGeoLoaded)mapRender();
+  }
+  mapDataPreloaded=true;
 }
 
 async function mapEnsureInit(){
@@ -1372,8 +1389,8 @@ function mapClearRoute(){
     },300);
   }
   window._dismissSplash=dismissSplash;
-  // Fallback: auto dismiss after 4s
-  setTimeout(dismissSplash,4000);
+  // Fallback: auto dismiss after 3s
+  setTimeout(dismissSplash,3000);
 })();
 </script>
 </body>
