@@ -959,6 +959,7 @@ async function planRoute(){
   if(!fn||!tn){showToast('请选择出发城市和目的地');return}
   if(fn===tn){showToast('出发地和目的地不能相同');return}
   const fc=CITIES.find(c=>c.name===fn),tc=CITIES.find(c=>c.name===tn);
+  if(!fc||!tc){showToast('请选择有效的出发地和目的地');return}
   res.innerHTML='<div class="loading-spinner"><div class="spinner"></div><span>正在规划…</span></div>';res.classList.add('visible');
 
   // Determine which cities need data (compute once, reuse)
@@ -971,14 +972,18 @@ async function planRoute(){
   const unc=routeCities.filter(c=>!weatherCache[cityKey(c)]);
   if(unc.length){const br=await Promise.allSettled(unc.map(c=>fetchWeather(c)));br.forEach((r,i)=>{if(r.status==='fulfilled')weatherCache[cityKey(unc[i])]={...r.value,_city:unc[i]}})}
 
-  const fd=weatherCache[cityKey(fc)],td=weatherCache[cityKey(tc)],fw=getWeatherInfo(fd.current.weather_code),tw=getWeatherInfo(td.current.weather_code);
+  const fd=weatherCache[cityKey(fc)],td=weatherCache[cityKey(tc)];
+  if(!fd||!td||!fd.current||!td.current){showToast('天气数据加载失败，请稍后重试');res.innerHTML='';return}
+  const fw=getWeatherInfo(fd.current.weather_code),tw=getWeatherInfo(td.current.weather_code);
   const tl={fly:'✈️ 飞机',train:'🚄 高铁',drive:'🚗 自驾'}[currentTransport];
   let v='';if(fw.group==='sunny'&&tw.group==='sunny')v='🌟 完美！两地都是晴天';else if(fw.group==='sunny')v=`⚠️ ${fn}晴天，但${tn}「${tw.desc}」`;else if(tw.group==='sunny')v=`🌈 ${fn}「${fw.desc}」，${tn}晴天值得去`;else v='🌧️ 两地都不太理想，看沿途天气';
 
   // Build horizontal scrolling timeline
   let citiesInRoute=[fc,...alongCities,tc];
   const buildCityItem=(c,idx,total)=>{
-    const d=weatherCache[cityKey(c)],w=getWeatherInfo(d.current.weather_code);
+    const d=weatherCache[cityKey(c)];
+    if(!d||!d.current){return `<div class="timeline-city waypoint"><div class="tc-name">${c.name}</div><div class="tc-weather">--</div></div>`}
+    const w=getWeatherInfo(d.current.weather_code);
     const cls=idx===0?'origin':idx===total-1?'destination':'waypoint';
     return `<div class="timeline-city ${cls}" onclick="openCityDetail('${c.name}')"><div class="tc-name">${c.name}</div><div class="tc-weather">${w.icon} ${Math.round(d.current.temperature_2m)}°C</div></div>`;
   };
@@ -998,8 +1003,8 @@ async function planRoute(){
   // Find sunny/rainy cities for additional suggestions (non-route)
   const routeNames=new Set(citiesInRoute.map(c=>c.name));
   const otherCities=CITIES.filter(c=>!routeNames.has(c.name)&&(currentTransport==='fly'||c.region==='china'));
-  const sunny=otherCities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&getWeatherInfo(d.current.weather_code).group==='sunny'}).slice(0,4);
-  const rainy=otherCities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&(getWeatherInfo(d.current.weather_code).group==='rainy'||getWeatherInfo(d.current.weather_code).group==='storm')}).slice(0,3);
+  const sunny=otherCities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&d.current&&getWeatherInfo(d.current.weather_code).group==='sunny'}).slice(0,4);
+  const rainy=otherCities.filter(c=>{const d=weatherCache[cityKey(c)];return d&&d.current&&(getWeatherInfo(d.current.weather_code).group==='rainy'||getWeatherInfo(d.current.weather_code).group==='storm')}).slice(0,3);
 
   res.innerHTML=`<div class="route-summary">
     <span class="rs-route">${fn} → ${tn}</span>
