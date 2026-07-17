@@ -1185,7 +1185,19 @@ async function mapEnsureInit(){
   if(loadText){loadText.style.display='';loadText.textContent='正在加载地图…';}
   // Load GeoJSON first (with placeholder)
   try{
-    const geo=await fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json',{signal:AbortSignal.timeout(10000)}).then(r=>r.json());
+    const geoUrls=[
+      'https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json',
+      'https://geojson.cn/api/data/china/100000.json',
+      'https://raw.githubusercontent.com/apache/echarts/4.9.0/map/json/china.json'
+    ];
+    let geo=null;
+    for(const url of geoUrls){
+      try{
+        const r=await fetch(url,{signal:AbortSignal.timeout(8000)});
+        if(r.ok){geo=await r.json();break}
+      }catch(e2){continue}
+    }
+    if(!geo)throw new Error('All geo sources failed');
     echarts.registerMap('china',geo);mapGeoLoaded=true;
     mapInitChart();
     // Render placeholder map immediately with score=0 for all
