@@ -503,8 +503,27 @@ const WMO_CODES={0:{desc:'晴朗',icon:'☀️',group:'sunny'},1:{desc:'大部�
 
 // ===== State =====
 let weatherCache={};
-let isLoading=false;
 let lastUpdateTime=null;
+// Stale-while-revalidate: load cached weather from localStorage
+function loadCachedWeather(){
+  try{
+    const raw=localStorage.getItem('lc_weather_cache');
+    if(!raw)return;
+    const obj=JSON.parse(raw);
+    // Only use cache if less than 24 hours old
+    if(obj._ts&&Date.now()-obj._ts<86400000){
+      delete obj._ts;
+      weatherCache=obj;
+    }
+  }catch(e){}
+}
+function saveCachedWeather(){
+  try{
+    const obj={...weatherCache,_ts:Date.now()};
+    localStorage.setItem('lc_weather_cache',JSON.stringify(obj));
+  }catch(e){}
+}
+let isLoading=false;
 let currentTransport='fly';
 let favorites=JSON.parse(localStorage.getItem('lc_favs')||'[]');
 let dateFilterStart=null;
@@ -646,7 +665,9 @@ async function refreshAllCities(){
   const grid=document.getElementById('weather-grid');
   const rf=document.getElementById('region-filter').value;
   const cities=rf==='all'?CITIES:CITIES.filter(c=>c.region===rf);
-  // Immediately render all cities as placeholder cards
+
+  // If cached data exists, dismiss splash immediately — user sees stale data
+  if(Object.keys(weatherCache).length>0&&window._dismissSplash){window._dismissSplash()}
   applyFiltersAndRender();
 
   // Phase 1: Load first 12 China cities first (instant visible results)
@@ -656,6 +677,7 @@ async function refreshAllCities(){
     const res=await Promise.allSettled(firstBatch.map(c=>fetchWeather(c)));
     res.forEach((r,i)=>{if(r.status==='fulfilled')weatherCache[cityKey(firstBatch[i])]={...r.value,_city:firstBatch[i]}});
     applyFiltersAndRender();
+    saveCachedWeather();
     if(window._dismissSplash)window._dismissSplash();
   }
 
@@ -667,6 +689,7 @@ async function refreshAllCities(){
     const res=await Promise.allSettled(batch.map(c=>fetchWeather(c)));
     res.forEach((r,idx)=>{if(r.status==='fulfilled')weatherCache[cityKey(batch[idx])]={...r.value,_city:batch[idx]}});
     applyFiltersAndRender();
+    saveCachedWeather();
   }
   lastUpdateTime=new Date();updateTimestamp();isLoading=false;btn.disabled=false;btn.textContent='🔄';
   document.getElementById('btn-daily-brief').style.display='inline-flex';
@@ -1088,9 +1111,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   })});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closePosterModal()}});
   populateRouteSelects();
-  // 先渲染首页骨架卡片
-  renderSkeleton(document.getElementById('weather-grid'),12);
-  // 优先加载地图数据（GeoJSON + 天气），完成后加载首页天气
+  // Load cached weather and render immediately (stale-while-revalidate)
+  loadCachedWeather();
+  if(Object.keys(weatherCache).length>0){
+    applyFiltersAndRender();
+    if(lastUpdateTime)updateTimestamp();
+  }else{
+    renderSkeleton(document.getElementById('weather-grid'),12);
+  }
+  // Preload map data, then refresh weather in background
   mapPreloadAll().then(()=>{refreshAllCities()});
 });
 </script>
