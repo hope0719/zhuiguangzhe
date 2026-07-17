@@ -1173,7 +1173,7 @@ function mapBuildOpt(data,lines,scatter){
     tooltip:{trigger:'item',backgroundColor:'rgba(255,253,248,0.96)',borderColor:'#F0E4D4',borderWidth:1,
       textStyle:{color:'#3D2C2C',fontFamily:"'Lora','PingFang SC',sans-serif",fontSize:13},
       formatter:p=>{
-        if(p.seriesType==='map'){const mi=data.find(d=>d.name===p.name);if(!mi||!mi.wd)return'<b>'+p.name+'</b><br/>加载中…';
+        if(p.seriesType==='map'){const mi=data.find(d=>d.name===p.name);if(!mi||!mi.wd){return p.name==='南海诸岛'?'':('<b>'+p.name+'</b><br/>加载中…')};
           const c=mi.wd.current||{},w=mapWK(c.weather_code),t=c.temperature_2m!=null?Math.round(c.temperature_2m)+'°C':'--';
           return'<b>'+p.name+'</b><br/><span style="color:#A0897A">省会: '+mi.capital+'</span><br/>'+w.icon+' '+w.desc+' '+t+'<br/>阳光评分: <b style="color:#E8923F">'+mi.value+'</b>';}
         if(p.seriesType==='scatter'&&p.data)return'<b>'+p.data.city+'</b><br/>'+(p.data.weather||'')+'<br/>'+(p.data.temp||'');
