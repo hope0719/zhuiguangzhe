@@ -684,7 +684,7 @@ async function refreshAllCities(){
   const firstBatch=chinaCities.slice(0,12);
   if(firstBatch.length){
     const res=await Promise.allSettled(firstBatch.map(c=>fetchWeather(c)));
-    res.forEach((r,i)=>{if(r.status==='fulfilled')weatherCache[cityKey(firstBatch[i])]={...r.value,_city:firstBatch[i]}});
+    res.forEach((r,i)=>{if(r.status==='fulfilled'&&r.value&&r.value.current)weatherCache[cityKey(firstBatch[i])]={...r.value,_city:firstBatch[i]}});
     applyFiltersAndRender();
     saveCachedWeather();
     if(window._dismissSplash)window._dismissSplash();
@@ -696,7 +696,7 @@ async function refreshAllCities(){
   for(let i=0;i<remaining.length;i+=bs){
     const batch=remaining.slice(i,i+bs);
     const res=await Promise.allSettled(batch.map(c=>fetchWeather(c)));
-    res.forEach((r,idx)=>{if(r.status==='fulfilled')weatherCache[cityKey(batch[idx])]={...r.value,_city:batch[idx]}});
+    res.forEach((r,idx)=>{if(r.status==='fulfilled'&&r.value&&r.value.current)weatherCache[cityKey(batch[idx])]={...r.value,_city:batch[idx]}});
     applyFiltersAndRender();
     saveCachedWeather();
   }
@@ -741,6 +741,7 @@ async function openCityDetail(name){
     showToast('正在加载 '+name+' 天气数据…');
     try{
       const r=await fetchWeather(city);
+      if(!r||!r.current)throw new Error('Invalid data');
       weatherCache[cityKey(city)]={...r,_city:city};
       d=weatherCache[cityKey(city)];
       applyFiltersAndRender();
@@ -857,8 +858,10 @@ function savePosterAsImage(){
 }
 
 function shareCity(name){
-  const city=CITIES.find(c=>c.name===name),d=weatherCache[cityKey(city)];
-  if(!d){showToast('数据未加载，请稍后再试');return}
+  const city=CITIES.find(c=>c.name===name);
+  if(!city){showToast('未找到城市信息');return}
+  const d=weatherCache[cityKey(city)];
+  if(!d||!d.current){showToast('数据未加载，请稍后再试');return}
   const w=getWeatherInfo(d.current.weather_code),uv=d.current.uv_index,uvI=getUVInfo(uv);
   const sunH=d.daily?.sunshine_duration?d.daily.sunshine_duration[0]/3600:null;
   const canvas=document.getElementById('poster-canvas'),ctx=canvas.getContext('2d');
